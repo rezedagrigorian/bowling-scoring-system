@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 
 import { IPlayer } from '../../types/player';
-import { SForm, SFormTitle, SFormRow, SFormInput, SFormLabel, SFormButton } from './style';
+import { SForm, SFormTitle, SFormRow, SFormInput, SFormButton } from './style';
 
 interface AddPlayerFormProps {
   players: Array<IPlayer>;
@@ -47,11 +47,10 @@ const AddPlayerForm: React.FC<AddPlayerFormProps> = ({ players, setPlayers }) =>
     <SForm onSubmit={handleSubmit}>
       <SFormTitle>Add player</SFormTitle>
       <SFormRow>
-        <SFormLabel htmlFor="player_name">Player Name</SFormLabel>
         <SFormInput
-          id="player_name"
           value={playerName}
           onChange={(e) => setPlayerName(e.target.value)}
+          placeholder="Player name"
         />
       </SFormRow>
       <SFormButton type="submit">Add Player</SFormButton>

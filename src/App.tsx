@@ -4,7 +4,9 @@ import AdminForm from './components/admin/AdminForm';
 import { IPlayer } from './types/player';
 import { IFrame } from './types/frame';
 
-import { SAppWrapper } from './styles';
+import { STopRow, SAppContainer } from './styles';
+import GameBoard from './components/board/GameBoard';
+import Logo from './components/Logo/Logo';
 
 type GameScores = {
   [key: string]: Array<IFrame>;
@@ -18,12 +20,11 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState<number>(0);
 
   useEffect(() => {
-    console.log(scores);
   }, [scores]);
 
   const gameStep = (value: number) => {
     const currentPlayer = players[currentPlayerIndex];
-    
+
     const currentPlayersScores = scores[currentPlayer.id] || [];
     currentPlayersScores.push({
       first: value,
@@ -43,13 +44,22 @@ const App = () => {
   }
 
   return (
-    <SAppWrapper>
-      <AdminForm
-        players={players}
-        setPlayers={setPlayers}
-        addScore={gameStep}
-      />
-    </SAppWrapper>
+    <SAppContainer>
+        <STopRow>
+          <Logo />
+          <AdminForm
+            players={players}
+            setPlayers={setPlayers}
+            addScore={gameStep}
+          />
+        </STopRow>
+      <GameBoard
+          players={players}
+          scores={scores}
+          playerIndex={currentPlayerIndex}
+          round={currentRound}
+        />
+    </SAppContainer>
   );
 }
 
