@@ -29,7 +29,7 @@ interface SBoardTableRowProps {
 
 export const SBoardTableRow = styled.tr<SBoardTableRowProps>`
   ${({ $active }) => $active && `
-    background-color: rgba(254, 211, 48, 0.7);
+    background-color: rgba(254, 211, 48, 0.2);
   `}
 `;
 
@@ -38,22 +38,22 @@ interface SBoardTableCellProps {
 }
 
 export const SBoardTableCell = styled.td<SBoardTableCellProps>`
-  padding: 0;
+  font-weight: bold;
+  height: 60px;
+  min-width: 80px;
+  padding: 20px 0 0;
+  position: relative;
   text-align: center;
   width: 60px;
-  min-width: 60px;
-  height: 40px;
-
-  ${({ $active }) => $active && `
-    background-color: rgba(32, 191, 107,1.0);
-  `}
 `;
 
 export const SBoardHeaderCell = styled(SBoardTableCell)`
-  font-weight: bold;
   font-size: 17px;
-  width: unset;
+  font-weight: bold;
+  height: 80px;
   max-width: unset;
+  padding: 0;
+  width: unset;
 `;
 
 export const SBoardPlayerCell = styled(SBoardHeaderCell)`
@@ -63,4 +63,20 @@ export const SBoardPlayerCell = styled(SBoardHeaderCell)`
 
 export const SBoardTableZero = styled(SBoardHeaderCell)`
   background-color: #fed330;
+`;
+
+export const SBoardTableCellScores = styled.div`
+  display: flex;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+`;
+
+export const SBoardTableCellScore = styled.div`
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 2px;
+  width: 20px;
 `;

@@ -10,7 +10,9 @@ import {
   SBoardTableRow,
   SBoardHeaderCell,
   SBoardPlayerCell,
-  SBoardTableZero
+  SBoardTableZero,
+  SBoardTableCellScores,
+  SBoardTableCellScore
 } from './style';
 
 interface GameBoardProps {
@@ -19,52 +21,92 @@ interface GameBoardProps {
     [key: string]: Array<IFrame>;
   };
   playerIndex: number;
-  round: number;
 }
 
-const GameBoard: React.FC<GameBoardProps> = ({ players = [], scores = {}, playerIndex, round }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ players = [], scores = {}, playerIndex }) => {
+  const renderCell = (frame: IFrame | null, player: IPlayer, index: number) => {
+    if (!frame) {
+      return (
+        <SBoardTableCell key={`${player.id}-${index}`} />
+      );
+    }
+
+    return (
+      <SBoardTableCell key={ `${player.id}-${index}` }>
+        <SBoardTableCellScores>
+          <SBoardTableCellScore>
+            { frame.first === 10 ? 'X' : frame.first }
+          </SBoardTableCellScore>
+          {frame.second !== undefined && (
+            <SBoardTableCellScore>
+              { frame.second + frame.first === 10 ? '/' : frame.second }
+            </SBoardTableCellScore>
+          )}
+          {frame.third !== undefined && (
+            <SBoardTableCellScore>
+              { frame.third }
+            </SBoardTableCellScore>
+          )}
+        </SBoardTableCellScores>
+        { frame.total }   
+      </SBoardTableCell>
+    );
+  }
+
   const renderPlayerRow = (player: IPlayer, row: number) => {
+    const cells = [];
+    
+    for (let i = 0; i < 10; i++) {
+      const score = scores[player.id] && scores[player.id][i] && scores[player.id][i].first;
+        cells.push(
+          renderCell(score ? scores[player.id][i]: null, player, i)
+        )
+    }
+    
     return (
       <SBoardTableRow key={player.id} $active={playerIndex === row}>
         <SBoardPlayerCell>
           { player.name }
         </SBoardPlayerCell>
-        {Array.from({ length: 10 }, (_, i) => {
-          const score = scores[player.id] && scores[player.id][i] && scores[player.id][i].first;
-          return (
-            <SBoardTableCell
-              key={`${player.id}-${i}`}
-              $active={ playerIndex === row && round === i }
-            >
-              { score || '' }
-            </SBoardTableCell>
-          );
-        })}
+        { cells }
       </SBoardTableRow>
     );
   };
 
   const renderHeader = () => {
+    let headerCells = []
+    for (let i = 0; i < 10; i++) {
+      headerCells.push(
+        <SBoardHeaderCell key={`header-${i}`}> { i + 1 } </SBoardHeaderCell>
+      )
+    }
     return (
       <SBoardTableRow>
         <SBoardTableZero/>
-        {
-          Array.from({ length: 10 }, (_, i) => (
-            <SBoardHeaderCell key={`round-${i}`}>{i + 1}</SBoardHeaderCell>
-          ))
-        }
+        { headerCells }
       </SBoardTableRow>
     );
   }
 
-  const renderEmptyRow = (rowIndex: number) => (
-    <SBoardTableRow key={`empty-${rowIndex}`}>
-      <SBoardTableCell />
-      {Array.from({ length: 10 }, (_, i) => (
-        <SBoardTableCell key={`empty-${rowIndex}-${i}`} />
-      ))}
-    </SBoardTableRow>
-  );
+  const renderEmptyRow = (rowIndex: number) => {
+    let cells = []
+    for (let i = 0; i <= 10; i++) {
+      cells.push(<SBoardTableCell key={`empty-row-${rowIndex}-${i}`} />)
+    }
+    return cells
+  };
+
+  const renderEmptyRows = (count: number) => {
+    let rows = []
+    for (let i = 0; i < count; i++) {
+      rows.push(
+        <SBoardTableRow key={`empty-row-${i}`}>
+          {renderEmptyRow(i)}
+        </SBoardTableRow>
+      )
+    }
+    return rows
+  };
 
   return (
     <SBoardWrapper>
@@ -73,9 +115,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ players = [], scores = {}, player
           {renderHeader()}
         </SBoardTableHead>
         <SBoardTableBody>
-          {[...players, ...Array(Math.max(5 - players.length, 0))].map((player, i) => 
-            player ? renderPlayerRow(player, i) : renderEmptyRow(i)
-          )}
+          {players.map((player, i) => renderPlayerRow(player, i))}
+          {renderEmptyRows(5 - players.length)}
         </SBoardTableBody>
       </SBoardTable>
     </SBoardWrapper>

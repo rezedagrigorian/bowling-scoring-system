@@ -1,4 +1,6 @@
 export interface IFrame {
     first: number;
-    second: number;
+    second?: number;
+    third?: number;
+    total?: number;
 }
