@@ -18,10 +18,6 @@ export const SImage = styled.div`
   img {
     width: 180px;
     height: 100%;
-
-    @media (min-width: 1024px) {
-      width: 280px;
-    }
   }
 `;
 

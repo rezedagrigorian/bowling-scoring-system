@@ -5,7 +5,8 @@ import { IPlayer } from '../../types/player';
 import AddPlayerForm from './AddPlayerForm';
 import DeletePlayerForm from './DeletePlayerForm';
 import GameForm from './GameForm';
-import { SAdminForms } from './style';
+
+import { SAdminForms } from './admin.style';
 
 interface AdminFormProps {
   players: Array<IPlayer>;
@@ -15,7 +16,7 @@ interface AdminFormProps {
 
 const AdminForm: React.FC<AdminFormProps> = ({ players, setPlayers, addScore }) => {
   return (
-    <SAdminForms>
+    <SAdminForms $oneColumn={players.length === 0}>
       <AddPlayerForm 
         players={players}
         setPlayers={setPlayers}
@@ -26,7 +27,9 @@ const AdminForm: React.FC<AdminFormProps> = ({ players, setPlayers, addScore }) 
           setPlayers={setPlayers}
         />
       )}
-      <GameForm addScore={addScore} />
+      {players.length > 0 && (
+        <GameForm addScore={addScore} />
+      )}
     </SAdminForms>
   );
 };

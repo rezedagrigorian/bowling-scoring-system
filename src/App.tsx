@@ -1,31 +1,65 @@
-import React, { useState } from 'react';
-import AdminForm from './components/Admin/AdminForm';
+import React, { useState, useEffect, useRef } from 'react';
+import AdminForm from './components/admin/AdminForm';
+
+import { toast } from 'react-toastify';
+import Confetti from 'react-confetti';
 
 import { IPlayer } from './types/player';
 import { IFrame } from './types/frame';
 
 import { STopRow, SAppContainer } from './styles';
-import GameBoard from './components/Board/GameBoard';
-import Logo from './components/Logo/Logo';
+import GameBoard from './components/board/GameBoard';
+import Logo from './components/logo/Logo';
 
 type GameScores = {
   [key: string]: Array<IFrame>;
 }
 
 const App = () => {
+  const [animation, setAnimation] = useState<boolean>(false);
+
   const [players, setPlayers] = useState<Array<IPlayer>>([]);
+  const [playerListChanged, setPlayerListChanged] = useState<boolean>(false);
 
   const [scores, setScores] = useState<GameScores>({});
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [currentRound, setCurrentRound] = useState<number>(0);
 
+  const resetScoreBoard = () => {
+    setScores({});
+    setCurrentPlayerIndex(0);
+    setCurrentRound(0);
+  }
+
+  useEffect(() => {
+    if (players.length > 0 || playerListChanged) {
+      setPlayerListChanged(true);
+      resetScoreBoard();
+      toast.warning("Players list changed, resetting the game");
+    }
+  }, [players]);
+  
   const nextPlayer = () => {
     if (currentPlayerIndex !== players.length - 1) {
       setCurrentPlayerIndex(currentPlayerIndex + 1);
     } else {
+      if (currentRound === 9) {
+        gameIsOver();
+        return;
+      }
       setCurrentPlayerIndex(0);
       setCurrentRound(currentRound + 1);
     }
+  }
+
+  const gameIsOver = () => {
+    toast.success('Game is over! The scoreboard will be reset in 5 seconds');
+
+    setAnimation(true);
+    setTimeout(() => {
+      resetScoreBoard();
+      setAnimation(false);
+    }, 5000);
   }
 
   const recalculateTotalScores = (frames: IFrame[]) : IFrame[] => {
@@ -112,21 +146,29 @@ const App = () => {
   }
 
   return (
-    <SAppContainer>
-        <STopRow>
-          <Logo />
-          <AdminForm
+    <>
+      <SAppContainer>
+          <STopRow>
+            <Logo />
+            <AdminForm
+              players={players}
+              setPlayers={setPlayers}
+              addScore={gameStep}
+            />
+          </STopRow>
+        <GameBoard
             players={players}
-            setPlayers={setPlayers}
-            addScore={gameStep}
+            scores={scores}
+            playerIndex={currentPlayerIndex}
           />
-        </STopRow>
-      <GameBoard
-          players={players}
-          scores={scores}
-          playerIndex={currentPlayerIndex}
-        />
-    </SAppContainer>
+      </SAppContainer>
+      <Confetti
+        width={document.body.clientWidth}
+        height={document.body.clientHeight}
+        numberOfPieces={300}
+        recycle={animation}
+      />
+    </>
   );
 }
 

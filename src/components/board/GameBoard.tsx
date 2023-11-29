@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { IPlayer } from '../../types/player';
 import { IFrame } from '../../types/frame';
+
 import {
   SBoardWrapper,
   SBoardTable,
@@ -13,7 +15,7 @@ import {
   SBoardTableZero,
   SBoardTableCellScores,
   SBoardTableCellScore
-} from './style';
+} from './board.style';
 
 interface GameBoardProps {
   players: Array<IPlayer>;

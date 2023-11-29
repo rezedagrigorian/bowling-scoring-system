@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 
 import { IPlayer } from '../../types/player';
-import { SForm, SFormTitle, SFormRow, SFormInput, SFormButton } from './style';
+import { SForm, SFormTitle, SFormRow, SFormInput, SFormButton } from './admin.style';
 
 interface AddPlayerFormProps {
   players: Array<IPlayer>;

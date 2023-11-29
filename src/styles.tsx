@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const SAppContainer = styled.div`
+  align-items: center;
   background: linear-gradient(243deg, #0C05E7 0%, #9B2FCD 100%);
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@ export const STopRow = styled.div`
   flex-direction: column;
   justify-items: center;
   margin-top: 30px;
-  width: 100%;
+  min-width: 850px;
 
   @media (min-width: 1100px) {
     flex-direction: row;

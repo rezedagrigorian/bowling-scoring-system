@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
-export const SAdminForms = styled.div`
+interface SAdminFormsProps {
+  $oneColumn?: boolean;
+}
+
+export const SAdminForms = styled.div<SAdminFormsProps>`
+  align-items: center;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
@@ -12,7 +17,12 @@ export const SAdminForms = styled.div`
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     margin: 0 auto;
-    max-width: 800px;
+    width: 800px;
+
+    ${({ $oneColumn }) => $oneColumn && `
+      grid-template-columns: 1fr;
+      max-width: 400px;
+    `}
   }
 `;
 

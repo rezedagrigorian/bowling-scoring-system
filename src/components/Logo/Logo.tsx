@@ -1,5 +1,6 @@
 import React from 'react';
-import { SLogo, SImage, SLogoTitle } from './style';
+
+import { SLogo, SImage, SLogoTitle } from './logo.style';
 import bowl from '../../assets/bowl.png';
 
 const Logo = () => {

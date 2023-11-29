@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { IPlayer } from '../../types/player';
-import { SForm, SFormTitle, SFormRow, SSelect, SFormButton } from './style';
+
+import { SForm, SFormTitle, SFormRow, SSelect, SFormButton } from './admin.style';
 
 interface DeletePlayerFormProps {
   players: Array<IPlayer>;
