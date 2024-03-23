@@ -9,7 +9,7 @@ import { IFrame } from './types/frame';
 
 import { STopRow, SAppContainer } from './styles';
 import GameBoard from './components/board/GameBoard';
-import Logo from './components/logo/Logo';
+import Logo from './components/Logo/Logo';
 
 type GameScores = {
   [key: string]: Array<IFrame>;
