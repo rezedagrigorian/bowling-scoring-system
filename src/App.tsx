@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+// eslint-disable-next-line
+import React, { useState, useEffect } from 'react';
 import AdminForm from './components/admin/AdminForm';
 
 import { toast } from 'react-toastify';
@@ -37,8 +38,8 @@ const App = () => {
       resetScoreBoard();
       toast.warning("Players list changed, resetting the game");
     }
-  }, [players]);
-  
+  }, [players, playerListChanged]);
+
   const nextPlayer = () => {
     if (currentPlayerIndex !== players.length - 1) {
       setCurrentPlayerIndex(currentPlayerIndex + 1);
@@ -62,7 +63,7 @@ const App = () => {
     }, 5000);
   }
 
-  const recalculateTotalScores = (frames: IFrame[]) : IFrame[] => {
+  const recalculateTotalScores = (frames: IFrame[]): IFrame[] => {
     // step 1: calculate totals for each frame
     const framesTotals = frames.map((frame, index) => {
       const nextFrame = frames[index + 1];
@@ -70,7 +71,7 @@ const App = () => {
 
       let total = 0;
       if (index === 9) {
-        total = frame.first + (frame.second ? frame.second : 0)  + (frame.third ? frame.third : 0);
+        total = frame.first + (frame.second ? frame.second : 0) + (frame.third ? frame.third : 0);
       } else if (frame.first === 10) {
         if (nextFrame && nextNextFrame) {
           total = frame.first + nextFrame.first + (nextFrame.second ? nextFrame.second : nextNextFrame.first);
@@ -148,19 +149,19 @@ const App = () => {
   return (
     <>
       <SAppContainer>
-          <STopRow>
-            <Logo />
-            <AdminForm
-              players={players}
-              setPlayers={setPlayers}
-              addScore={gameStep}
-            />
-          </STopRow>
-        <GameBoard
+        <STopRow>
+          <Logo />
+          <AdminForm
             players={players}
-            scores={scores}
-            playerIndex={currentPlayerIndex}
+            setPlayers={setPlayers}
+            addScore={gameStep}
           />
+        </STopRow>
+        <GameBoard
+          players={players}
+          scores={scores}
+          playerIndex={currentPlayerIndex}
+        />
       </SAppContainer>
       <Confetti
         width={document.body.clientWidth}
